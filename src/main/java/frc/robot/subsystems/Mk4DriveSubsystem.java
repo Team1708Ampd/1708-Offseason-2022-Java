@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.SwerveDriveLib.*;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
+import static frc.robot.Constants.*;
 
 
 // Class for the Mark IV Drivetrain Subsystem. Inherits the Subsystem Base class
@@ -23,7 +24,7 @@ public class Mk4DriveSubsystem extends SubsystemBase {
     private static final double MAX_VOLTAGE = 12.0;
     public static final double MAX_VELOCITY_METERS_PER_SECOND = 4.14528;
     public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = MAX_VELOCITY_METERS_PER_SECOND /
-            Math.hypot(Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, Constants.DRIVETRAIN_WHEELBASE_METERS / 2.0);
+            Math.hypot(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0);
 
     private final SwerveModule frontLeftModule;
     private final SwerveModule frontRightModule;
@@ -33,15 +34,15 @@ public class Mk4DriveSubsystem extends SubsystemBase {
     //private final PigeonIMU gyroscope = new PigeonIMU(Constants.DRIVETRAIN_PIGEON_ID);
 
     // Use Navx for now
-    private final AHRS gyroscope = new AHRS(SPI.Port.kMXP);
+    private final AHRS m_navx = new AHRS(SPI.Port.kMXP);
 
     private final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
-            new Translation2d(Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, Constants.DRIVETRAIN_WHEELBASE_METERS / 2.0),
-            new Translation2d(Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -Constants.DRIVETRAIN_WHEELBASE_METERS / 2.0),
-            new Translation2d(-Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, Constants.DRIVETRAIN_WHEELBASE_METERS / 2.0),
-            new Translation2d(-Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -Constants.DRIVETRAIN_WHEELBASE_METERS / 2.0)
+            new Translation2d(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0),
+            new Translation2d(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0),
+            new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0),
+            new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0)
     );
-    private final SwerveDriveOdometry odometry = new SwerveDriveOdometry(kinematics, Rotation2d.fromDegrees(gyroscope.getFusedHeading()));
+    private final SwerveDriveOdometry odometry = new SwerveDriveOdometry(kinematics, Rotation2d.fromDegrees(m_navx.getFusedHeading()));
 
     private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
@@ -53,10 +54,10 @@ public class Mk4DriveSubsystem extends SubsystemBase {
                         .withSize(2, 4)
                         .withPosition(0, 0),
                 Mk3SwerveModuleHelper.GearRatio.STANDARD,
-                Constants.FRONT_LEFT_MODULE_DRIVE_MOTOR,
-                Constants.FRONT_LEFT_MODULE_STEER_MOTOR,
-                Constants.FRONT_LEFT_MODULE_STEER_ENCODER,
-                Constants.FRONT_LEFT_MODULE_STEER_OFFSET
+                FRONT_LEFT_MODULE_DRIVE_MOTOR,
+                FRONT_LEFT_MODULE_STEER_MOTOR,
+                FRONT_LEFT_MODULE_STEER_ENCODER,
+                FRONT_LEFT_MODULE_STEER_OFFSET
         );
 
         frontRightModule = Mk3SwerveModuleHelper.createFalcon500(
@@ -64,10 +65,10 @@ public class Mk4DriveSubsystem extends SubsystemBase {
                         .withSize(2, 4)
                         .withPosition(2, 0),
                 Mk3SwerveModuleHelper.GearRatio.STANDARD,
-                Constants.FRONT_RIGHT_MODULE_DRIVE_MOTOR,
-                Constants.FRONT_RIGHT_MODULE_STEER_MOTOR,
-                Constants.FRONT_RIGHT_MODULE_STEER_ENCODER,
-                Constants.FRONT_RIGHT_MODULE_STEER_OFFSET
+                FRONT_RIGHT_MODULE_DRIVE_MOTOR,
+                FRONT_RIGHT_MODULE_STEER_MOTOR,
+                FRONT_RIGHT_MODULE_STEER_ENCODER,
+                FRONT_RIGHT_MODULE_STEER_OFFSET
         );
 
         backLeftModule = Mk3SwerveModuleHelper.createFalcon500(
@@ -75,10 +76,10 @@ public class Mk4DriveSubsystem extends SubsystemBase {
                         .withSize(2, 4)
                         .withPosition(4, 0),
                 Mk3SwerveModuleHelper.GearRatio.STANDARD,
-                Constants.BACK_LEFT_MODULE_DRIVE_MOTOR,
-                Constants.BACK_LEFT_MODULE_STEER_MOTOR,
-                Constants.BACK_LEFT_MODULE_STEER_ENCODER,
-                Constants.BACK_LEFT_MODULE_STEER_OFFSET
+                BACK_LEFT_MODULE_DRIVE_MOTOR,
+                BACK_LEFT_MODULE_STEER_MOTOR,
+                BACK_LEFT_MODULE_STEER_ENCODER,
+                BACK_LEFT_MODULE_STEER_OFFSET
         );
 
         backRightModule = Mk3SwerveModuleHelper.createFalcon500(
@@ -86,10 +87,10 @@ public class Mk4DriveSubsystem extends SubsystemBase {
                         .withSize(2, 4)
                         .withPosition(6, 0),
                 Mk3SwerveModuleHelper.GearRatio.STANDARD,
-                Constants.BACK_RIGHT_MODULE_DRIVE_MOTOR,
-                Constants.BACK_RIGHT_MODULE_STEER_MOTOR,
-                Constants.BACK_RIGHT_MODULE_STEER_ENCODER,
-                Constants.BACK_RIGHT_MODULE_STEER_OFFSET
+                BACK_RIGHT_MODULE_DRIVE_MOTOR,
+                BACK_RIGHT_MODULE_STEER_MOTOR,
+                BACK_RIGHT_MODULE_STEER_ENCODER,
+                BACK_RIGHT_MODULE_STEER_OFFSET
         );
 
         shuffleboardTab.addNumber("Gyroscope Angle", () -> getRotation().getDegrees());
@@ -98,14 +99,22 @@ public class Mk4DriveSubsystem extends SubsystemBase {
     }
 
     public void zeroGyroscope() {
+        //gyroscope.zeroYaw();
         odometry.resetPosition(
                 new Pose2d(odometry.getPoseMeters().getTranslation(), Rotation2d.fromDegrees(0.0)),
-                Rotation2d.fromDegrees(gyroscope.getFusedHeading())
+                Rotation2d.fromDegrees(m_navx.getFusedHeading())
         );
     }
 
     public Rotation2d getRotation() {
-        return odometry.getPoseMeters().getRotation();
+        if (m_navx.isMagnetometerCalibrated()) {
+               // We will only get valid fused headings if the magnetometer is calibrated
+             return Rotation2d.fromDegrees(m_navx.getFusedHeading());
+        }
+        
+      //  We have to invert the angle of the NavX so that rotating the robot counter-clockwise makes the angle increase.
+        return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
+        // return odometry.getPoseMeters().getRotation();
     }
 
     public void drive(ChassisSpeeds chassisSpeeds) {
@@ -114,7 +123,7 @@ public class Mk4DriveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        odometry.update(Rotation2d.fromDegrees(gyroscope.getFusedHeading()),
+        odometry.update(Rotation2d.fromDegrees(m_navx.getFusedHeading()),
                 new SwerveModuleState(frontLeftModule.getDriveVelocity(), new Rotation2d(frontLeftModule.getSteerAngle())),
                 new SwerveModuleState(frontRightModule.getDriveVelocity(), new Rotation2d(frontRightModule.getSteerAngle())),
                 new SwerveModuleState(backLeftModule.getDriveVelocity(), new Rotation2d(backLeftModule.getSteerAngle())),
