@@ -4,17 +4,11 @@
 
 package frc.robot;
 
-<<<<<<< HEAD
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.I2C;
-=======
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-
->>>>>>> origin/swerve_drv_specials
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.util.Color;
@@ -38,7 +32,6 @@ public class Robot extends TimedRobot {
 
   TalonFX backRightTurn = new TalonFX(6);
 
-<<<<<<< HEAD
   public static IntakeSub intakeSub = new IntakeSub();
   public static IntakeArmSub intakeArmSub = new IntakeArmSub();
   public static BackIntakeSub backIntakeSub = new BackIntakeSub();
@@ -58,14 +51,9 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
   }
-=======
-  @SuppressWarnings("unused")
-  private final RobotContainer container = new RobotContainer();
->>>>>>> origin/swerve_drv_specials
 
   @Override
   public void robotPeriodic() {
-<<<<<<< HEAD
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -89,10 +77,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-=======
-      //CommandScheduler.getInstance().run();
-      backRightTurn.set(ControlMode.PercentOutput, 0.75);
->>>>>>> origin/swerve_drv_specials
   }
 
 }
