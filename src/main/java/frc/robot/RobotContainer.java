@@ -21,8 +21,6 @@ import frc.robot.commands.IntakeArmUp;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.Shoot;
-import frc.robot.commands.ShooterHoodDown;
-import frc.robot.commands.ShooterHoodUp;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -53,6 +51,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     XboxController joystick = new XboxController(0);
+    XboxController mech = new XboxController(1);
 
     JoystickButton intake = new JoystickButton(joystick, XboxController.Button.kA.value);
     intake.whileHeld(new BothIntakes());
@@ -72,11 +71,17 @@ public class RobotContainer {
     JoystickButton feed = new JoystickButton(joystick, XboxController.Button.kRightBumper.value);
     feed.whileHeld(new Feed());
 
-    JoystickButton hoodUp = new JoystickButton(joystick, XboxController.Button.kBack.value);
-    hoodUp.whileHeld(new ShooterHoodUp());
+    // JoystickButton hoodUp = new JoystickButton(joystick, XboxController.Button.kBack.value);
+    // hoodUp.whileHeld(new ShooterHoodUp());
 
-    JoystickButton hoodDown = new JoystickButton(joystick, XboxController.Button.kStart.value);
-    hoodDown.whileHeld(new ShooterHoodDown());
+    // JoystickButton hoodDown = new JoystickButton(joystick, XboxController.Button.kStart.value);
+    // hoodDown.whileHeld(new ShooterHoodDown());
+
+    JoystickButton elevatorUp = new JoystickButton(joystick, XboxController.Button.kStart.value);
+    elevatorUp.whileHeld(new ElevatorUp());
+
+    JoystickButton elevatorDown = new JoystickButton(joystick, XboxController.Button.kBack.value);
+    elevatorDown.whileHeld(new ElevatorDown());
   }
 
   /**

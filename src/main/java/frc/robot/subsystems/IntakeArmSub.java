@@ -15,11 +15,11 @@ public class IntakeArmSub extends SubsystemBase {
   public IntakeArmSub() {}
 
   public void armUp() {
-    intakeArm.set(ControlMode.PercentOutput, 0.5);
+    intakeArm.set(ControlMode.PercentOutput, 0.25);
   }
 
   public void armDown() {
-    intakeArm.set(ControlMode.PercentOutput, -0.5);
+    intakeArm.set(ControlMode.PercentOutput, -0.25);
   }
 
   public void armOff() {

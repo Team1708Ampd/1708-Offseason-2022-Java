@@ -13,8 +13,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class ShooterSub extends SubsystemBase {
   /** Creates a new ShooterSub. */
   CANSparkMax shooter = new CANSparkMax(22, MotorType.kBrushless);
-  CANSparkMax shooter2 = new CANSparkMax(23, MotorType.kBrushless);
-  CANSparkMax feeder = new CANSparkMax(24, MotorType.kBrushless);
+  CANSparkMax shooter2 = new CANSparkMax(28, MotorType.kBrushless);
   public ShooterSub() {}
 
   public void shoot() {

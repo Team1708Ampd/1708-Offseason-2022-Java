@@ -10,21 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ShooterHoodSub extends SubsystemBase {
-  WPI_TalonFX shooterHood = new WPI_TalonFX(25);
-  /** Creates a new ShooterHoodSub. */
-  public ShooterHoodSub() {}
-
-  public void hoodUp() {
-    shooterHood.set(ControlMode.PercentOutput, 0.5);
-  }
-
-  public void hoodDown() {
-    shooterHood.set(ControlMode.PercentOutput, -0.5);
-  }
-
-  public void hoodOff() {
-    shooterHood.set(ControlMode.PercentOutput, 0);
-  }
+ 
 
   @Override
   public void periodic() {
