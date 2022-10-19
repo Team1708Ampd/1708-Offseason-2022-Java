@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+<<<<<<< HEAD
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import frc.robot.commands.BothIntakes;
 import frc.robot.commands.BothOuttakes;
@@ -24,6 +25,12 @@ import frc.robot.commands.Shoot;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+=======
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import frc.robot.subsystems.Mk4DriveSubsystem;
+import frc.robot.commands.DriveCommand;
+>>>>>>> origin/swerve_drv_specials
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -32,6 +39,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+<<<<<<< HEAD
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
@@ -93,4 +101,50 @@ public class RobotContainer {
   //   // An ExampleCommand will run in autonomous
   //   return m_autoCommand;
   // }
+=======
+  private final Mk4DriveSubsystem drivetrain = new Mk4DriveSubsystem();
+
+    private final XboxController controller = new XboxController(0);
+
+    public RobotContainer() {
+        drivetrain.register();
+
+        drivetrain.setDefaultCommand(new DriveCommand(
+                drivetrain,
+                () -> -modifyAxis(controller.getLeftY()), // Axes are flipped here on purpose
+                () -> -modifyAxis(controller.getLeftX()),
+                () -> -modifyAxis(controller.getRightX())
+        ));
+
+        new Button(controller::getBackButtonPressed)
+                .whenPressed(drivetrain::zeroGyroscope);
+    }
+
+    public Mk4DriveSubsystem getDrivetrain() {
+        return drivetrain;
+    }
+
+    private static double deadband(double value, double deadband) {
+        if (Math.abs(value) > deadband) {
+            if (value > 0.0) {
+                return (value - deadband) / (1.0 - deadband);
+            } else {
+                return (value + deadband) / (1.0 - deadband);
+            }
+        } else {
+            return 0.0;
+        }
+    }
+
+    private static double modifyAxis(double value) {
+        // Deadband
+        value = deadband(value, 0.05);
+
+        // Square the axis
+        value = Math.copySign(value * value, value);
+
+        return value;
+    }
+
+>>>>>>> origin/swerve_drv_specials
 }
