@@ -9,6 +9,7 @@ import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ElevatorSub extends SubsystemBase {
@@ -16,34 +17,25 @@ public class ElevatorSub extends SubsystemBase {
   CANSparkMax bottomElevator = new CANSparkMax(26, MotorType.kBrushless);
   CANSparkMax backElevator = new CANSparkMax(25, MotorType.kBrushless);
 
-  public ElevatorSub() {}
-
-  public void bottomElevatorUp() {
-    bottomElevator.set(0.5);
+  public ElevatorSub() {
   }
 
-  public void bottomElevatorDown() {
-    bottomElevator.set(-0.5);
+  public void up(double speed){
+    bottomElevator.set(speed);
+    backElevator.set(speed);
   }
 
-  public void bottomElevatorOff() {
-    bottomElevator.set(0);
-  }
-
-  public void backElevatorUp() {
-    backElevator.set(-0.5);
-  }
-
-  public void backElevatorDown() {
-    backElevator.set(0.5);
-  }
-
-  public void backElevatorOff() {
-    backElevator.set(0);
-  }
-
+public void down(){
+  bottomElevator.set(-0.4);
+  backElevator.set(-0.4);
+}
+public void stop(){
+  bottomElevator.set(0);
+  backElevator.set(0);
+}
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
   }
 }

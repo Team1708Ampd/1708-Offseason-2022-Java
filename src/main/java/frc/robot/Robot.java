@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
 import com.revrobotics.ColorMatch;
@@ -29,8 +25,9 @@ import frc.robot.subsystems.ShooterSub;
  * project.
  */
 public class Robot extends TimedRobot {
+  private Command m_autonomousCommand;
 
-  TalonFX backRightTurn = new TalonFX(6);
+  private RobotContainer m_robotContainer;
 
   public static IntakeSub intakeSub = new IntakeSub();
   public static IntakeArmSub intakeArmSub = new IntakeArmSub();
@@ -52,6 +49,13 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
   }
 
+  /**
+   * This function is called every robot packet, no matter the mode. Use this for items like
+   * diagnostics that you want ran during disabled, autonomous, teleoperated and test.
+   *
+   * <p>This runs after the mode specific periodic functions, but before LiveWindow and
+   * SmartDashboard integrated updating.
+   */
   @Override
   public void robotPeriodic() {
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
@@ -79,4 +83,32 @@ public class Robot extends TimedRobot {
     }
   }
 
+  /** This function is called periodically during autonomous. */
+  @Override
+  public void autonomousPeriodic() {}
+
+  @Override
+  public void teleopInit() {
+    // This makes sure that the autonomous stops running when
+    // teleop starts running. If you want the autonomous to
+    // continue until interrupted by another command, remove
+    // this line or comment it out.
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.cancel();
+    }
+  }
+
+  /** This function is called periodically during operator control. */
+  @Override
+  public void teleopPeriodic() {}
+
+  @Override
+  public void testInit() {
+    // Cancels all running commands at the start of test mode.
+    CommandScheduler.getInstance().cancelAll();
+  }
+
+  /** This function is called periodically during test mode. */
+  @Override
+  public void testPeriodic() {}
 }
