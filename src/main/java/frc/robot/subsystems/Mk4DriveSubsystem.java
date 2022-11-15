@@ -123,12 +123,7 @@ public class Mk4DriveSubsystem extends SubsystemBase {
 
         SwerveModuleState[] states = kinematics.toSwerveModuleStates(chassisSpeeds);
 
-        System.out.printf("Front Left Angle: %.2f\n", frontLeftModule.getSteerAngle());
-        System.out.printf("Front Right Angle: %.2f\n", frontRightModule.getSteerAngle());
-        System.out.printf("Back Left Angle: %.2f\n", backLeftModule.getSteerAngle());
-        System.out.printf("Back Right Angle: %.2f\n", backRightModule.getSteerAngle());
-
-        frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians() + Math.PI/2);
+        frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
         frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians() + Math.PI/2);
         backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians() + Math.PI/2);
         backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
